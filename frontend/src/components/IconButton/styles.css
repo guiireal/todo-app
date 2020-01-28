@@ -1,0 +1,15 @@
+table > tbody button.btn {
+    margin-right: 7px;
+}
+
+div.todo-form button.btn {
+    margin-right: 5px;
+}
+
+
+.btn-warning,
+.btn-warning:hover,
+.btn-warning:active,
+.btn-warning:focus {
+    color: #FFF !important;
+}
