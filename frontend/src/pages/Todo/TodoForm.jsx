@@ -1,11 +1,13 @@
 import React from 'react';
 
-import {faPlus, faSearch} from "@fortawesome/free-solid-svg-icons";
+import {faPlus, faSearch, faRecycle} from "@fortawesome/free-solid-svg-icons";
 
 import IconButton from "../../components/IconButton";
 import Grid from "../../components/Grid";
 
-const TodoForm = ({handleAdd, handleChange, handleSearch, description}) => {
+const TodoForm = (
+  {handleAdd, handleChange, handleSearch, handleClear, description}
+) => {
   return (
     <div role='form' className='todo-form'>
       <div className="row">
@@ -29,6 +31,11 @@ const TodoForm = ({handleAdd, handleChange, handleSearch, description}) => {
             styles='info'
             icon={faSearch}
             onClick={handleSearch}
+          />
+          <IconButton
+            styles='secondary'
+            icon={faRecycle}
+            onClick={handleClear}
           />
         </Grid>
       </div>

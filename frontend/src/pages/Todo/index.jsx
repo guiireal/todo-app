@@ -41,14 +41,19 @@ export default class Todo extends Component {
     this.refresh();
   };
 
+  handleClear = async () => {
+    this.setState({description: ''});
+    await this.refresh();
+  };
+
   handleMarkAsDone = async todo => {
     await api.put(`/todos/${todo._id}`, {...todo, done: true});
-    this.refresh();
+    this.refresh(this.state.description);
   };
 
   handleMarkAsPending = async todo => {
     await api.put(`/todos/${todo._id}`, {...todo, done: false});
-    this.refresh();
+    this.refresh(this.state.description);
   };
 
   render() {
@@ -60,6 +65,7 @@ export default class Todo extends Component {
           handleAdd={this.handleAdd}
           handleChange={this.handleChange}
           handleSearch={this.handleSearch}
+          handleClear={this.handleClear}
         />
         <TodoList
           list={this.state.list}
