@@ -8,6 +8,19 @@ import Grid from "../../components/Grid";
 const TodoForm = (
   {handleAdd, handleChange, handleSearch, handleClear, description}
 ) => {
+
+  const keyHandler = e => {
+    switch (e.key) {
+      case 'Enter':
+        e.shiftKey ? handleSearch() : handleAdd();
+        break;
+      case 'Escape':
+        handleClear();
+        break;
+      default:
+    }
+  };
+
   return (
     <div role='form' className='todo-form'>
       <div className="row">
@@ -18,6 +31,7 @@ const TodoForm = (
             className="form-control"
             placeholder='Adicione uma tarefa'
             value={description}
+            onKeyUp={keyHandler}
             onChange={handleChange}
           />
         </Grid>
