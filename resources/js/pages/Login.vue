@@ -2,6 +2,27 @@
 import { Label } from "@/components/ui/label";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
+
+import { useForm } from "@inertiajs/vue3";
+import AlertSuccess from "@/components/alert/AlertSuccess.vue";
+
+const form = useForm({
+  email: ""
+});
+
+defineProps({
+  message: {
+    type: String,
+    required: false
+  }
+});
+
+const submit = () => {
+  form.post(route("login.store"), {
+    onSuccess: () => form.reset("email"),
+  });
+};
+
 </script>
 
 <template>
@@ -11,14 +32,25 @@ import { Button } from "@/components/ui/button";
         <h1 class="text-3xl font-bold">Login</h1>
         <p class="text-gray-500 dark:text-gray-400">Digite seu e-mail para entrar ou criar uma conta.</p>
       </div>
-      <form class="space-y-4">
+      <form class="space-y-4" @submit.prevent="submit">
         <div>
-          <Label htmlFor="email">E-mail</Label>
-          <Input id="email" type="email" placeholder="Digite seu melhor e-mail" required/>
+          <Label for="email">E-mail</Label>
+          <Input
+            id="email"
+            type="email"
+            placeholder="Digite seu melhor e-mail"
+            required class="bg-white"
+            v-model="form.email"
+          />
+          <div class="text-red-500" v-if="form.errors.email">{{ form.errors.email }}</div>
         </div>
-        <Button type="submit" class="w-full">
-          Enviar link de acesso por e-mail
+        <Button type="submit" class="w-full" :disabled="form.processing">
+          <span v-if="!form.processing">Enviar link de acesso por e-mail</span>
+          <span v-if="form.processing">Enviando...</span>
         </Button>
+        <AlertSuccess v-if="form.wasSuccessful">
+          {{ message }}
+        </AlertSuccess>
       </form>
     </div>
   </div>
