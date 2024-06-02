@@ -62,7 +62,7 @@ table job_batches {
     finished_at integer [null]
 }
 
-Table failed_jobs {
+table failed_jobs {
     id int [pk, increment, not null]
     uuid varchar(255) [not null, unique]
     connection text [not null]
