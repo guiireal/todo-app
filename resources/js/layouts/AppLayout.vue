@@ -12,6 +12,8 @@ import {
 } from "@/components/dashboard/sidebar";
 import { HomeIcon, MixerVerticalIcon } from "@radix-icons/vue";
 import { usePage } from "@inertiajs/vue3";
+import UserDropdown from "@/components/dashboard/UserDropdown.vue";
+import Logo from "@/components/Logo.vue";
 
 const page = usePage();
 
@@ -23,7 +25,7 @@ const isActive = (fullUrl: string) => route(fullUrl).endsWith(page.url);
   <div class="grid grid-cols-[16rem_1fr] gap-4">
     <Sidebar>
       <SidebarHeader>
-        <h1></h1>
+        <Logo/>
       </SidebarHeader>
       <SidebarMain class="flex flex-col flex-grow">
         <SidebarNav>
@@ -56,7 +58,7 @@ const isActive = (fullUrl: string) => route(fullUrl).endsWith(page.url);
         </SidebarNav>
       </SidebarMain>
       <SidebarFooter>
-        <h1>User</h1>
+        <UserDropdown/>
       </SidebarFooter>
     </Sidebar>
     <main>
