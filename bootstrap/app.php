@@ -18,9 +18,6 @@ return Application::configure(basePath: dirname(__DIR__))
             AddLinkHeadersForPreloadedAssets::class,
         ]);
 
-        //
-    })
-    ->withMiddleware(function (Middleware $middleware) {
         $middleware->redirectGuestsTo(fn() => route('login.index'));
     })
     ->withExceptions(function (Exceptions $exceptions) {

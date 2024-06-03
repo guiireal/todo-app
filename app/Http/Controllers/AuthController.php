@@ -6,6 +6,7 @@ use App\Http\Requests\LoginRequest;
 use App\Mail\SendMagicLoginMail;
 use App\Models\EmailToken;
 use App\Models\User;
+use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Mail;
 use Inertia\Response;
 
@@ -37,5 +38,16 @@ class AuthController extends Controller
         User::loginWithEmailToken($emailToken);
 
         return redirect()->route('app.index');
+    }
+
+    public function destroy(Request $request)
+    {
+        $request->session()->invalidate();
+
+        $request->session()->regenerate();
+
+        auth()->logout();
+
+        return redirect()->route('login.index');
     }
 }

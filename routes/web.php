@@ -22,6 +22,7 @@ Route::middleware('auth')
     ->prefix('app')
     ->name('app.')
     ->group(function () {
+        Route::delete('/logout', [AuthController::class, 'destroy'])->name('logout');
         Route::get('/', AppController::class)->name('index');
     });
 
