@@ -3,6 +3,7 @@
 use App\Http\Controllers\AppController;
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\HomeController;
+use App\Http\Controllers\SettingController;
 use Illuminate\Support\Facades\Route;
 
 Route::get('/', HomeController::class)->name('home');
@@ -24,5 +25,12 @@ Route::middleware('auth')
     ->group(function () {
         Route::delete('/logout', [AuthController::class, 'destroy'])->name('logout');
         Route::get('/', AppController::class)->name('index');
+
+        Route::prefix('settings')
+            ->controller(SettingController::class)
+            ->name('settings.')
+            ->group(function () {
+                Route::get('/', 'index')->name('index');
+            });
     });
 
