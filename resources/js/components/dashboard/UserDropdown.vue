@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { Avatar, AvatarFallback, AvatarImage, } from "@/components/ui/avatar";
+import { Avatar, AvatarFallback, } from "@/components/ui/avatar";
 import { Button } from "@/components/ui/button";
 import {
   DropdownMenu,
@@ -12,8 +12,18 @@ import {
 } from "@/components/ui/dropdown-menu";
 import { useAuthUser } from "@/composables/useAuthUser";
 import { LockClosedIcon, MixerVerticalIcon, RocketIcon } from "@radix-icons/vue";
+import { router } from "@inertiajs/vue3";
 
 const user = useAuthUser();
+
+const emailFormatted = () => {
+  const size = 23;
+  if (user.email.length > size) {
+    return `${user.email.substring(0, size)}...`;
+  }
+  return user.email;
+};
+
 </script>
 
 <template>
@@ -21,15 +31,14 @@ const user = useAuthUser();
     <DropdownMenuTrigger as-child>
       <Button variant="link" class="relative h-8 items-center justify-between w-full space-x-2 !px-0">
         <Avatar class="h-8 w-8">
-          <AvatarImage src="/avatars/01.png" alt="@shadcn"/>
-          <AvatarFallback>SC</AvatarFallback>
+          <AvatarFallback>{{ user.name[0] }}</AvatarFallback>
         </Avatar>
         <div class="flex flex-col flex-1 space-y-1 text-left">
           <p class="text-sm font-medium leading-none">
-            shadcn
+            {{ user.name }}
           </p>
           <p class="text-xs leading-none text-muted-foreground">
-            m@example.com
+            {{ emailFormatted() }}
           </p>
         </div>
       </Button>
@@ -38,10 +47,10 @@ const user = useAuthUser();
       <DropdownMenuLabel class="font-normal flex">
         <div class="flex flex-col space-y-1">
           <p class="text-sm font-medium leading-none">
-            shadcn
+            {{ user.name }}
           </p>
           <p class="text-xs leading-none text-muted-foreground">
-            m@example.com
+            {{ emailFormatted() }}
           </p>
         </div>
       </DropdownMenuLabel>
@@ -57,7 +66,7 @@ const user = useAuthUser();
         </DropdownMenuItem>
       </DropdownMenuGroup>
       <DropdownMenuSeparator/>
-      <DropdownMenuItem>
+      <DropdownMenuItem @click="router.delete(route('app.logout'))">
         <LockClosedIcon class="w-3 h-3 mr-3"/>
         Sair
       </DropdownMenuItem>
