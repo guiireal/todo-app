@@ -8,7 +8,7 @@ const props = defineProps<{
 </script>
 
 <template>
-  <header :class="cn('', props.class)">
+  <header :class="cn('px-6', props.class)">
     <slot/>
   </header>
 </template>

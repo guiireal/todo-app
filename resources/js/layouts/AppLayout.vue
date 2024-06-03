@@ -19,7 +19,7 @@ import {
       <SidebarHeader>
         <h1></h1>
       </SidebarHeader>
-      <SidebarMain>
+      <SidebarMain class="flex flex-col flex-grow">
         <SidebarNav>
           <SidebarNavMain>
             <SidebarNavLink :href="route('app.index')">Tarefas</SidebarNavLink>
@@ -27,7 +27,7 @@ import {
           </SidebarNavMain>
         </SidebarNav>
 
-        <SidebarNav>
+        <SidebarNav class="mt-auto">
           <SidebarNavHeader>
             <SidebarNavHeaderTitle>
               Links extras
