@@ -5,12 +5,13 @@ import { Link } from "@inertiajs/vue3";
 
 const props = defineProps<{
   class?: HTMLAttributes["class"],
-  href: string
+  href: string,
+  active?: boolean,
 }>();
 </script>
 
 <template>
-  <Link :class="cn('text-sm px-3 py-2', props.class)" :href="href">
+  <Link :class="cn('text-sm px-3 py-2',props.active && 'bg-secondary', props.class)" :href="href">
     <slot/>
   </Link>
 </template>

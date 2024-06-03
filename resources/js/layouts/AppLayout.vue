@@ -1,7 +1,6 @@
 <script setup lang="ts">
-
-import Sidebar from "../components/dashboard/sidebar/Sidebar.vue";
 import {
+  Sidebar,
   SidebarFooter,
   SidebarHeader,
   SidebarMain,
@@ -11,6 +10,12 @@ import {
   SidebarNavLink,
   SidebarNavMain
 } from "@/components/dashboard/sidebar";
+import { usePage } from "@inertiajs/vue3";
+
+const page = usePage();
+
+const isActive = (fullUrl: string) => route(fullUrl).endsWith(page.url);
+
 </script>
 
 <template>
@@ -22,8 +27,16 @@ import {
       <SidebarMain class="flex flex-col flex-grow">
         <SidebarNav>
           <SidebarNavMain>
-            <SidebarNavLink :href="route('app.index')">Tarefas</SidebarNavLink>
-            <SidebarNavLink :href="route('app.settings.index')">Configurações</SidebarNavLink>
+            <SidebarNavLink
+              :href="route('app.index')"
+              :active="isActive('app.index')">
+              Tarefas
+            </SidebarNavLink>
+            <SidebarNavLink
+              :href="route('app.settings.index')"
+              :active="isActive('app.settings.index')">
+              Configurações
+            </SidebarNavLink>
           </SidebarNavMain>
         </SidebarNav>
 
