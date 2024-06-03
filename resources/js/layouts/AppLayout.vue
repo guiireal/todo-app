@@ -10,6 +10,7 @@ import {
   SidebarNavLink,
   SidebarNavMain
 } from "@/components/dashboard/sidebar";
+import { HomeIcon, MixerVerticalIcon } from "@radix-icons/vue";
 import { usePage } from "@inertiajs/vue3";
 
 const page = usePage();
@@ -30,11 +31,13 @@ const isActive = (fullUrl: string) => route(fullUrl).endsWith(page.url);
             <SidebarNavLink
               :href="route('app.index')"
               :active="isActive('app.index')">
+              <HomeIcon class="w-3 h-3 mr-3"/>
               Tarefas
             </SidebarNavLink>
             <SidebarNavLink
               :href="route('app.settings.index')"
               :active="isActive('app.settings.index')">
+              <MixerVerticalIcon class="w-3 h-3 mr-3"/>
               Configurações
             </SidebarNavLink>
           </SidebarNavMain>

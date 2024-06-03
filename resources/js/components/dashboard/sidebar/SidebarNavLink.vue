@@ -11,7 +11,10 @@ const props = defineProps<{
 </script>
 
 <template>
-  <Link :class="cn('text-sm px-3 py-2',props.active && 'bg-secondary', props.class)" :href="href">
+  <Link
+    :class="cn('flex items-center text-xs px-3 py-2 rounded-md', props.active && 'bg-secondary', props.class)"
+    :href="href"
+  >
     <slot/>
   </Link>
 </template>
