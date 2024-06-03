@@ -22,7 +22,7 @@ const isActive = (fullUrl: string) => route(fullUrl).endsWith(page.url);
 </script>
 
 <template>
-  <div class="grid grid-cols-[16rem_1fr] gap-4">
+  <div class="grid grid-cols-[16rem_1fr]">
     <Sidebar>
       <SidebarHeader>
         <Logo/>

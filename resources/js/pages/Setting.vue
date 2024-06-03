@@ -1,14 +1,17 @@
 <script setup lang="ts">
 import AppLayout from "@/layouts/AppLayout.vue";
+import { Page, PageHeader, PageHeaderTitle, PageMain } from "@/components/dashboard/page";
 </script>
 
 <template>
   <AppLayout>
-    <main class="flex items-center justify-center h-screen">
-      <div class="flex flex-col items-center justify-center space-y-4">
-        Configurações
-      </div>
-    </main>
+    <Page>
+      <PageHeader>
+        <PageHeaderTitle>Configurações</PageHeaderTitle>
+      </PageHeader>
+      <PageMain>
+        <h1>Configurações</h1>
+      </PageMain>
+    </Page>
   </AppLayout>
-
 </template>

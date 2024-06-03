@@ -8,7 +8,7 @@ const props = defineProps<{
 </script>
 
 <template>
-  <header :class="cn('px-6 py-2 border-b border-border', props.class)">
+  <section :class="cn('h-screen', props.class)">
     <slot/>
-  </header>
+  </section>
 </template>
