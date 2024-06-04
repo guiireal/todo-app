@@ -22,6 +22,7 @@ import {
 import { Input } from "@/components/ui/input";
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow, } from "@/components/ui/table";
 import { valueUpdater } from "@/lib/utils";
+import { Badge } from "@/components/ui/badge";
 
 export type Todo = {
   id: string;
@@ -67,11 +68,13 @@ const data: Todo[] = [
 const columns: ColumnDef<Todo>[] = [
   {
     accessorKey: "is_completed",
-    header: "Concluído?",
+    header: () => h("div", { class: "text-gray-400" }, "Concluído?"),
     cell: ({ row }: any) => {
       const isCompleted = row.getValue("is_completed") ? "Sim" : "Não";
-      return h("div", {
-        class: `${isCompleted === "Sim" ? "text-green-500" : "text-red-500"}`,
+      const isCompletedVariant = row.getValue("is_completed") ? "default" : "outline";
+
+      return h(Badge, {
+        variant: isCompletedVariant,
       }, isCompleted);
     }
   },
@@ -80,6 +83,7 @@ const columns: ColumnDef<Todo>[] = [
     header: ({ column }: any) => {
       return h(Button, {
           variant: "ghost",
+          class: "text-md",
           onClick: () => column.toggleSorting(column.getIsSorted() === "asc"),
         },
         ["Título", h(CaretSortIcon, { class: "ml-2 h-4 w-4" })]);
@@ -88,7 +92,7 @@ const columns: ColumnDef<Todo>[] = [
   },
   {
     accessorKey: "created_at",
-    header: () => h("div", { class: "text-right" }, "Criado em"),
+    header: () => h("div", { class: "text-right text-gray-400" }, "Criado em"),
     cell: ({ row }: any) => h("div", { class: "text-right font-medium" }, row.getValue("created_at")?.toLocaleDateString()),
   },
   {
