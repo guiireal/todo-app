@@ -1,0 +1,236 @@
+<script setup lang="ts">
+import type { ColumnDef, ColumnFiltersState, SortingState, VisibilityState, } from "@tanstack/vue-table";
+import {
+  FlexRender,
+  getCoreRowModel,
+  getFilteredRowModel,
+  getPaginationRowModel,
+  getSortedRowModel,
+  useVueTable,
+} from "@tanstack/vue-table";
+import { h, ref } from "vue";
+import { CaretSortIcon, ChevronDownIcon } from "@radix-icons/vue";
+import DropdownAction from "./TodoDataTableDropDown.vue";
+
+import { Button } from "@/components/ui/button";
+import {
+  DropdownMenu,
+  DropdownMenuCheckboxItem,
+  DropdownMenuContent,
+  DropdownMenuTrigger,
+} from "@/components/ui/dropdown-menu";
+import { Input } from "@/components/ui/input";
+import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow, } from "@/components/ui/table";
+import { valueUpdater } from "@/lib/utils";
+
+export type Todo = {
+  id: string;
+  title: string;
+  is_completed: boolean;
+  created_at: Date;
+  updated_at?: Date;
+}
+
+const data: Todo[] = [
+  {
+    id: "1",
+    title: "Estudar Vue.js",
+    is_completed: false,
+    created_at: new Date(),
+  },
+  {
+    id: "2",
+    title: "Fazer compras",
+    is_completed: true,
+    created_at: new Date("2024-03-01"),
+  },
+  {
+    id: "3",
+    title: "Ler um livro",
+    is_completed: false,
+    created_at: new Date("2024-03-02"),
+  },
+  {
+    id: "4",
+    title: "Assistir um filme",
+    is_completed: true,
+    created_at: new Date("2024-03-03"),
+  },
+  {
+    id: "5",
+    title: "Estudar Tailwind CSS",
+    is_completed: false,
+    created_at: new Date("2024-03-04"),
+  },
+];
+
+const columns: ColumnDef<Todo>[] = [
+  {
+    accessorKey: "is_completed",
+    header: "Concluído?",
+    cell: ({ row }: any) => {
+      const isCompleted = row.getValue("is_completed") ? "Sim" : "Não";
+      return h("div", {
+        class: `${isCompleted === "Sim" ? "text-green-500" : "text-red-500"}`,
+      }, isCompleted);
+    }
+  },
+  {
+    accessorKey: "title",
+    header: ({ column }: any) => {
+      return h(Button, {
+          variant: "ghost",
+          onClick: () => column.toggleSorting(column.getIsSorted() === "asc"),
+        },
+        ["Título", h(CaretSortIcon, { class: "ml-2 h-4 w-4" })]);
+    },
+    cell: ({ row }: any) => h("div", {}, row.getValue("title")),
+  },
+  {
+    accessorKey: "created_at",
+    header: () => h("div", { class: "text-right" }, "Criado em"),
+    cell: ({ row }: any) => h("div", { class: "text-right font-medium" }, row.getValue("created_at")?.toLocaleDateString()),
+  },
+  {
+    id: "actions",
+    enableHiding: false,
+    cell: ({ row }: any) => h(DropdownAction, { todo: row.original })
+  },
+];
+
+const mapIds = [{
+  id: "is_completed",
+  label: "Concluído?",
+}, {
+  id: "title",
+  label: "Título",
+}, {
+  id: "created_at",
+  label: "Criado em",
+}];
+
+const sorting = ref<SortingState>([]);
+const columnFilters = ref<ColumnFiltersState>([]);
+const columnVisibility = ref<VisibilityState>({});
+const rowSelection = ref({});
+
+const table = useVueTable({
+  data,
+  columns,
+  getCoreRowModel: getCoreRowModel(),
+  getPaginationRowModel: getPaginationRowModel(),
+  getSortedRowModel: getSortedRowModel(),
+  getFilteredRowModel: getFilteredRowModel(),
+  onSortingChange: updaterOrValue => valueUpdater(updaterOrValue, sorting),
+  onColumnFiltersChange: updaterOrValue => valueUpdater(updaterOrValue, columnFilters),
+  onColumnVisibilityChange: updaterOrValue => valueUpdater(updaterOrValue, columnVisibility),
+  onRowSelectionChange: updaterOrValue => valueUpdater(updaterOrValue, rowSelection),
+  state: {
+    get sorting() {
+      return sorting.value;
+    },
+    get columnFilters() {
+      return columnFilters.value;
+    },
+    get columnVisibility() {
+      return columnVisibility.value;
+    },
+    get rowSelection() {
+      return rowSelection.value;
+    },
+  },
+});
+</script>
+
+<template>
+  <div class="w-full">
+    <div class="flex items-center py-4">
+      <Input
+        class="max-w-sm"
+        placeholder="Filtrar tarefas..."
+        :model-value="table.getColumn('title')?.getFilterValue() as string"
+        @update:model-value="table.getColumn('title')?.setFilterValue($event)"
+      />
+      <DropdownMenu>
+        <DropdownMenuTrigger as-child>
+          <Button variant="outline" class="ml-auto">
+            Colunas
+            <ChevronDownIcon class="ml-2 h-4 w-4"/>
+          </Button>
+        </DropdownMenuTrigger>
+        <DropdownMenuContent align="end">
+          <DropdownMenuCheckboxItem
+            v-for="column in table.getAllColumns().filter((column: any) => column.getCanHide())"
+            :key="column.id"
+            class="capitalize"
+            :checked="column.getIsVisible()"
+            @update:checked="(value) => {
+              column.toggleVisibility(!!value)
+            }"
+          >
+            {{ mapIds.find(({ id }) => id === column.id)?.label }}
+          </DropdownMenuCheckboxItem>
+        </DropdownMenuContent>
+      </DropdownMenu>
+    </div>
+    <div class="rounded-md border">
+      <Table>
+        <TableHeader>
+          <TableRow v-for="headerGroup in table.getHeaderGroups()" :key="headerGroup.id">
+            <TableHead v-for="header in headerGroup.headers" :key="header.id">
+              <FlexRender v-if="!header.isPlaceholder" :render="header.column.columnDef.header"
+                          :props="header.getContext()"/>
+            </TableHead>
+          </TableRow>
+        </TableHeader>
+        <TableBody>
+          <template v-if="table.getRowModel().rows?.length">
+            <TableRow
+              v-for="row in table.getRowModel().rows"
+              :key="row.id"
+              :data-state="row.getIsSelected() && 'selected'"
+            >
+              <TableCell v-for="cell in row.getVisibleCells()" :key="cell.id">
+                <FlexRender :render="cell.column.columnDef.cell" :props="cell.getContext()"/>
+              </TableCell>
+            </TableRow>
+          </template>
+
+          <TableRow v-else>
+            <TableCell
+              :colspan="columns.length"
+              class="h-24 text-center"
+            >
+              Nenhuma tarefa encontrada.
+            </TableCell>
+          </TableRow>
+        </TableBody>
+      </Table>
+    </div>
+
+    <div class="flex items-center justify-end space-x-2 py-4">
+      <div class="flex-1 text-sm text-muted-foreground">
+        {{ table.getFilteredSelectedRowModel().rows.length }} de
+        {{ table.getFilteredRowModel().rows.length }} linha(s) selecionada(s).
+      </div>
+      <div class="space-x-2">
+        <Button
+          variant="outline"
+          size="sm"
+          :disabled="!table.getCanPreviousPage()"
+          @click="table.previousPage()"
+        >
+          Anterior
+        </Button>
+        <Button
+          variant="outline"
+          size="sm"
+          :disabled="!table.getCanNextPage()"
+          @click="table.nextPage()"
+        >
+          Próxima
+        </Button>
+      </div>
+    </div>
+  </div>
+</template>

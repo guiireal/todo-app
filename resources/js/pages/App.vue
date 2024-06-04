@@ -1,6 +1,7 @@
 <script setup lang="ts">
 import AppLayout from "@/layouts/AppLayout.vue";
 import { Page, PageHeader, PageHeaderTitle, PageMain } from "@/components/dashboard/page";
+import TodoDataTable from "@/components/dashboard/TodoDataTable.vue";
 </script>
 
 <template>
@@ -10,7 +11,7 @@ import { Page, PageHeader, PageHeaderTitle, PageMain } from "@/components/dashbo
         <PageHeaderTitle>Tarefas</PageHeaderTitle>
       </PageHeader>
       <PageMain>
-        <h1>Tarefas</h1>
+        <TodoDataTable/>
       </PageMain>
     </Page>
   </AppLayout>

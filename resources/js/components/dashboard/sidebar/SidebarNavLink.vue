@@ -12,7 +12,7 @@ const props = defineProps<{
 
 <template>
   <Link
-    :class="cn('flex items-center text-xs px-3 py-2 rounded-md', props.active && 'bg-secondary', props.class)"
+    :class="cn('flex items-center text-sm px-3 py-2 rounded-md', props.active && 'bg-secondary', props.class)"
     :href="href"
   >
     <slot/>
