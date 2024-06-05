@@ -14,6 +14,7 @@ import { HomeIcon, MixerVerticalIcon } from "@radix-icons/vue";
 import { usePage } from "@inertiajs/vue3";
 import UserDropdown from "@/components/dashboard/UserDropdown.vue";
 import Logo from "@/components/Logo.vue";
+import Toaster from "@/components/ui/toast/Toaster.vue";
 
 const page = usePage();
 
@@ -64,5 +65,6 @@ const isActive = (fullUrl: string) => route(fullUrl).endsWith(page.url);
     <main>
       <slot/>
     </main>
+    <Toaster/>
   </div>
 </template>

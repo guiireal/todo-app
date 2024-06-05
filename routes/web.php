@@ -24,7 +24,17 @@ Route::middleware('auth')
     ->name('app.')
     ->group(function () {
         Route::delete('/logout', [AuthController::class, 'destroy'])->name('logout');
-        Route::get('/', AppController::class)->name('index');
+        Route::get('/', [AppController::class, 'index'])->name('index');
+
+
+        Route::prefix('todos')
+            ->name('todos.')
+            ->group(function () {
+                Route::get('/get-all', [AppController::class, 'getAll'])->name('get-all');
+                Route::post('/', [AppController::class, 'store'])->name('store');
+                Route::put('{todo}', [AppController::class, 'update'])->name('update');
+            });
+
 
         Route::prefix('settings')
             ->controller(SettingController::class)

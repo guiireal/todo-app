@@ -11,7 +11,6 @@ import {
 import { h, ref } from "vue";
 import { CaretSortIcon, ChevronDownIcon } from "@radix-icons/vue";
 import DropdownAction from "./TodoDataTableDropDown.vue";
-
 import { Button } from "@/components/ui/button";
 import {
   DropdownMenu,
@@ -23,47 +22,16 @@ import { Input } from "@/components/ui/input";
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow, } from "@/components/ui/table";
 import { valueUpdater } from "@/lib/utils";
 import { Badge } from "@/components/ui/badge";
+import { Todo } from "@/types";
 
-export type Todo = {
-  id: string;
-  title: string;
-  is_completed: boolean;
-  created_at: Date;
-  updated_at?: Date;
-}
+const props = defineProps({
+  todos: {
+    type: Array<Todo>,
+    required: true
+  }
+});
 
-const data: Todo[] = [
-  {
-    id: "1",
-    title: "Estudar Vue.js",
-    is_completed: false,
-    created_at: new Date(),
-  },
-  {
-    id: "2",
-    title: "Fazer compras",
-    is_completed: true,
-    created_at: new Date("2024-03-01"),
-  },
-  {
-    id: "3",
-    title: "Ler um livro",
-    is_completed: false,
-    created_at: new Date("2024-03-02"),
-  },
-  {
-    id: "4",
-    title: "Assistir um filme",
-    is_completed: true,
-    created_at: new Date("2024-03-03"),
-  },
-  {
-    id: "5",
-    title: "Estudar Tailwind CSS",
-    is_completed: false,
-    created_at: new Date("2024-03-04"),
-  },
-];
+const dataTableData = ref<Todo[]>(props.todos);
 
 const columns: ColumnDef<Todo>[] = [
   {
@@ -71,10 +39,12 @@ const columns: ColumnDef<Todo>[] = [
     header: () => h("div", { class: "text-gray-400" }, "Concluído?"),
     cell: ({ row }: any) => {
       const isCompleted = row.getValue("is_completed") ? "Sim" : "Não";
-      const isCompletedVariant = row.getValue("is_completed") ? "default" : "outline";
 
       return h(Badge, {
-        variant: isCompletedVariant,
+        class: isCompleted === "Sim"
+          ? "bg-green-100 text-green-800"
+          : "bg-red-100 text-red-800",
+        variant: "outline"
       }, isCompleted);
     }
   },
@@ -93,7 +63,7 @@ const columns: ColumnDef<Todo>[] = [
   {
     accessorKey: "created_at",
     header: () => h("div", { class: "text-right text-gray-400" }, "Criado em"),
-    cell: ({ row }: any) => h("div", { class: "text-right font-medium" }, row.getValue("created_at")?.toLocaleDateString()),
+    cell: ({ row }: any) => h("div", { class: "text-right font-medium" }, new Date(row.getValue("created_at")).toLocaleDateString()),
   },
   {
     id: "actions",
@@ -119,16 +89,16 @@ const columnVisibility = ref<VisibilityState>({});
 const rowSelection = ref({});
 
 const table = useVueTable({
-  data,
+  data: dataTableData.value,
   columns,
   getCoreRowModel: getCoreRowModel(),
   getPaginationRowModel: getPaginationRowModel(),
   getSortedRowModel: getSortedRowModel(),
   getFilteredRowModel: getFilteredRowModel(),
-  onSortingChange: updaterOrValue => valueUpdater(updaterOrValue, sorting),
-  onColumnFiltersChange: updaterOrValue => valueUpdater(updaterOrValue, columnFilters),
-  onColumnVisibilityChange: updaterOrValue => valueUpdater(updaterOrValue, columnVisibility),
-  onRowSelectionChange: updaterOrValue => valueUpdater(updaterOrValue, rowSelection),
+  onSortingChange: (updaterOrValue: any) => valueUpdater(updaterOrValue, sorting),
+  onColumnFiltersChange: (updaterOrValue: any) => valueUpdater(updaterOrValue, columnFilters),
+  onColumnVisibilityChange: (updaterOrValue: any) => valueUpdater(updaterOrValue, columnVisibility),
+  onRowSelectionChange: (updaterOrValue: any) => valueUpdater(updaterOrValue, rowSelection),
   state: {
     get sorting() {
       return sorting.value;
@@ -144,6 +114,7 @@ const table = useVueTable({
     },
   },
 });
+
 </script>
 
 <template>
