@@ -6,5 +6,6 @@
 
 - Laravel 11
 - Vue.js 3
+- Shadcn UI Vue
 - Inertia.js
 - PostgreSQL
