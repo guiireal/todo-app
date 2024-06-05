@@ -13,31 +13,30 @@ import {
 } from "@/components/ui/sheet";
 import { useForm } from "@inertiajs/vue3";
 import { useToast } from "@/components/ui/toast/use-toast";
-import { Todo } from "@/types";
 
 const { toast } = useToast();
 
-const props = defineProps<{
-  todo?: Todo;
-}>();
-
 const form = useForm({
-  title: props.todo?.title || "",
+  title: "",
 });
 
 
 const submit = () => {
-  const hasTodo = !!props.todo;
   form.post(route("app.todos.store"),
     {
+      preserveScroll: true,
       preserveState: true,
       onSuccess: () => {
         toast({
           title: "Sucesso!",
-          description: `Tarefa ${hasTodo ? "atualizada" : "criada"} com sucesso!`,
+          description: `Tarefa criada com sucesso!`,
         });
 
         form.reset("title");
+
+        setTimeout(() => {
+          window.location.reload();
+        }, 1000);
       },
     }
   );
@@ -54,7 +53,7 @@ const submit = () => {
     </SheetTrigger>
     <SheetContent>
       <SheetHeader>
-        <SheetTitle>{{ props.todo ? "Editar tarefa" : "Criar tarefa" }}</SheetTitle>
+        <SheetTitle>Criar tarefa</SheetTitle>
       </SheetHeader>
       <form @submit.prevent="submit">
         <div class="grid gap-4 py-4">

@@ -89,8 +89,12 @@ const columnVisibility = ref<VisibilityState>({});
 const rowSelection = ref({});
 
 const table = useVueTable({
-  data: dataTableData.value,
-  columns,
+  get data() {
+    return dataTableData.value;
+  },
+  get columns() {
+    return columns;
+  },
   getCoreRowModel: getCoreRowModel(),
   getPaginationRowModel: getPaginationRowModel(),
   getSortedRowModel: getSortedRowModel(),
