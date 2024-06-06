@@ -28,10 +28,11 @@ Route::middleware('auth')
 
         Route::prefix('todos')
             ->name('todos.')
+            ->controller(AppController::class)
             ->group(function () {
-                Route::post('/', [AppController::class, 'store'])->name('store');
-                Route::put('{todo}/mark-as-completed', [AppController::class, 'markAsCompleted'])->name('mark-as-completed');
-                Route::delete('{todo}', [AppController::class, 'destroy'])->name('destroy');
+                Route::post('/', 'store')->name('store');
+                Route::put('{todo}/mark-as-completed', 'markAsCompleted')->name('mark-as-completed');
+                Route::delete('{todo}', 'destroy')->name('destroy');
             });
 
         Route::prefix('settings')
@@ -39,6 +40,9 @@ Route::middleware('auth')
             ->name('settings.')
             ->group(function () {
                 Route::get('/', 'index')->name('index');
+                Route::put('/', 'update')->name('update');
+                Route::get('/theme', 'theme')->name('theme.index');
+                Route::get('/billing', 'billing')->name('billing.index');
             });
     });
 

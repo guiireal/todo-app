@@ -29,7 +29,7 @@ const submit = () => {
       onSuccess: () => {
         toast({
           title: "Sucesso!",
-          description: `Tarefa criada com sucesso!`,
+          description: "Tarefa criada com sucesso!",
         });
 
         form.reset("title");

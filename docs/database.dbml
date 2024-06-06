@@ -3,7 +3,6 @@ table users {
     name varchar(50)
     email varchar(255) [unique]
     email_verified_at timestamp [null]
-    password varchar(255)
     remember_token varchar(255)
     created_at timestamp
     updated_at timestamp
@@ -69,5 +68,20 @@ table failed_jobs {
     queue text [not null]
     payload longtext [not null]
     exception longtext [not null]
-    failed_at timestamp [default: `CURRENT_TIMESTAMP`, not null]
+    failed_at timestamp [not null, default: 'CURRENT_TIMESTAMP']
+}
+
+table email_tokens {
+  email varchar(255) [not null, unique]
+  token varchar(255) [not null]
+  created_at timestamp [not null, default: 'CURRENT_TIMESTAMP']
+}
+
+table todos {
+  id unsignedBiginteger [pk, not null, increment]
+  title varchar(100) [not null]
+  is_completed bit [not null, default: 0]
+  user_id unsignedBigInteger [not null, ref: > users.id]
+  created_at timestamp
+  updated_at timestamp
 }

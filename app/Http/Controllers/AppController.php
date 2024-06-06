@@ -22,7 +22,7 @@ class AppController extends Controller
     {
         $request->user()->todos()->create($request->validated());
 
-        return redirect()->route('app.index');
+        return to_route('app.index');
     }
 
     public function markAsCompleted(Request $request, Todo $todo)
@@ -35,7 +35,7 @@ class AppController extends Controller
             'is_completed' => true,
         ]);
 
-        return redirect()->route('app.index');
+        return to_route('app.index');
     }
 
     public function destroy(Request $request, Todo $todo)
@@ -46,6 +46,6 @@ class AppController extends Controller
 
         $todo->delete();
 
-        return redirect()->route('app.index');
+        return to_route('app.index');
     }
 }
