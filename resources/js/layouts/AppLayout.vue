@@ -16,7 +16,8 @@ import Logo from "@/components/Logo.vue";
 import Toaster from "@/components/ui/toast/Toaster.vue";
 import { useIsActivePage } from "@/composables/useIsActivePage";
 
-const isActivePage = useIsActivePage();
+const { isActivePage, onlyContainsActivePage } = useIsActivePage();
+
 
 </script>
 
@@ -37,7 +38,7 @@ const isActivePage = useIsActivePage();
             </SidebarNavLink>
             <SidebarNavLink
               :href="route('app.settings.index')"
-              :active="isActivePage('app.settings.index')">
+              :active="onlyContainsActivePage('app/settings')">
               <MixerVerticalIcon class="w-3 h-3 mr-3"/>
               Configurações
             </SidebarNavLink>

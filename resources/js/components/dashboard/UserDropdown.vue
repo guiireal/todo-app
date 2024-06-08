@@ -56,11 +56,11 @@ const emailFormatted = () => {
       </DropdownMenuLabel>
       <DropdownMenuSeparator/>
       <DropdownMenuGroup>
-        <DropdownMenuItem>
+        <DropdownMenuItem @click="router.visit(route('app.settings.index'))">
           <MixerVerticalIcon class="w-3 h-3 mr-3"/>
           Configurações
         </DropdownMenuItem>
-        <DropdownMenuItem>
+        <DropdownMenuItem @click="router.visit(route('app.settings.billing.index'))">
           <RocketIcon class="w-3 h-3 mr-3"/>
           Upgrade
         </DropdownMenuItem>

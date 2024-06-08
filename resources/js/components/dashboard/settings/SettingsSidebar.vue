@@ -2,7 +2,7 @@
 import { SidebarNav, SidebarNavLink, SidebarNavMain } from "@/components/dashboard/sidebar";
 import { useIsActivePage } from "@/composables/useIsActivePage";
 
-const isActivePage = useIsActivePage();
+const { isActivePage } = useIsActivePage();
 </script>
 
 <template>
