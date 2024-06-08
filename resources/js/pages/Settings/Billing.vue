@@ -5,13 +5,8 @@ import { ref } from "vue";
 import { Button } from "@/components/ui/button";
 import { RocketIcon } from "@radix-icons/vue";
 import { Progress } from "@/components/ui/progress";
-import { router } from "@inertiajs/vue3";
 
 const currentPlan = ref("gratuíto");
-
-const handleUpgradePlan = () => {
-  router.visit(route("app.checkout", { preserveState: true }));
-};
 
 </script>
 
@@ -38,7 +33,7 @@ const handleUpgradePlan = () => {
       <CardFooter class="flex items-center justify-between border-t border-border pt-6">
         <span>Para um maior limite, assine o plano PRO</span>
         <a :href="route('app.checkout')">
-          <Button @click="handleUpgradePlan">
+          <Button>
             <RocketIcon class="w-5 h-5 mr-3"/>
             Assine por R$ 9,90/mês
           </Button>
