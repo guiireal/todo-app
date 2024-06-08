@@ -19,7 +19,6 @@ const form = useForm({
 const submit = () => {
   form.put(route("app.settings.update"),
     {
-      preserveScroll: true,
       preserveState: true,
       onSuccess: () => {
         toast({

@@ -3,6 +3,8 @@ import SettingsLayout from "@/layouts/SettingsLayout.vue";
 import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from "@/components/ui/card";
 import { ref } from "vue";
 import { Button } from "@/components/ui/button";
+import { RocketIcon } from "@radix-icons/vue";
+import { Progress } from "@/components/ui/progress";
 
 const currentPlan = ref("gratuíto");
 </script>
@@ -10,18 +12,29 @@ const currentPlan = ref("gratuíto");
 <template>
   <SettingsLayout>
     <Card>
-      <CardHeader>
+      <CardHeader class="border-b border-border">
         <CardTitle>Assinatura</CardTitle>
         <CardDescription>
           Você atualmente está usando o plano {{ currentPlan }}.
         </CardDescription>
       </CardHeader>
-      <CardContent>
-        Teste
+      <CardContent class="pt-6">
+        <div class="space-y-2">
+          <header class="flex items-center justify-between">
+            <span class="text-muted-foreground text-sm">1/5</span>
+            <span class="text-muted-foreground text-sm">20%</span>
+          </header>
+          <main>
+            <Progress :model-value="20"/>
+          </main>
+        </div>
       </CardContent>
-      <CardFooter class="flex flex-col items-start gap-y-3">
+      <CardFooter class="flex items-center justify-between border-t border-border pt-6">
         <span>Para um maior limite, assine o plano PRO</span>
-        <Button>Assinar o plano PRO</Button>
+        <Button>
+          <RocketIcon class="w-5 h-5 mr-3"/>
+          Assinar o plano PRO
+        </Button>
       </CardFooter>
     </Card>
   </SettingsLayout>
